@@ -7,55 +7,55 @@ The aim is to classify a test utterance as either "Bale" or "Kheir" by comparing
 
 The pipeline includes:
 
-1. Audio Loading
-Three audio files are used:
+1.Audio Loading
+   Three audio files are used:
 
-A reference audio of the word "Bale" (bale.wav)
+   A reference audio of the word "Bale" (bale.wav)
 
-A reference audio of the word "Kheir" (kheir.wav)
+   A reference audio of the word "Kheir" (kheir.wav)
 
-A test audio, either of "Bale" or "Kheir" (e.g., bale_test.wav)
+   A test audio, either of "Bale" or "Kheir" (e.g., bale_test.wav)
 
-The audio is loaded using Librosa with its original sampling rate.
+   The audio is loaded using Librosa with its original sampling rate.
 
-2. Framing
-Each audio signal is split into overlapping frames using a sliding window:
+2.Framing
+  Each audio signal is split into overlapping frames using a sliding window:
 
-Frame length: 300 samples
+  Frame length: 300 samples
 
-Hop length: 100 samples
-Framing is essential to break the signal into small chunks for short-time analysis.
+  Hop length: 100 samples
+  Framing is essential to break the signal into small chunks for short-time analysis.
 
-3. MFCC Feature Extraction
-MFCCs are computed from each frame:
+3.MFCC Feature Extraction
+  MFCCs are computed from each frame:
 
-16 MFCC coefficients per frame
+  16 MFCC coefficients per frame
 
-Frame-level MFCCs are averaged across frequency bins (mean over time)
-This results in a sequence of MFCC feature vectors representing the overall spectral content of the word.
+  Frame-level MFCCs are averaged across frequency bins (mean over time)
+  This results in a sequence of MFCC feature vectors representing the overall spectral content of the word.
 
-4. DTW-Based Matching
-The DTW (Dynamic Time Warping) algorithm is used to align and compare the test signal with each reference template:
+4.DTW-Based Matching
+  The DTW (Dynamic Time Warping) algorithm is used to align and compare the test signal with each reference template:
 
-A custom cepstral distance (squared Euclidean distance between MFCC vectors) is used as the frame-level distance metric.
+  A custom cepstral distance (squared Euclidean distance between MFCC vectors) is used as the frame-level distance metric.
 
-DTW calculates the minimum cumulative cost to warp one feature sequence into another.
+  DTW calculates the minimum cumulative cost to warp one feature sequence into another.
 
-The template (either "Bale" or "Kheir") that yields the lower DTW distance to the test signal is chosen as the recognized word.
+  The template (either "Bale" or "Kheir") that yields the lower DTW distance to the test signal is chosen as the recognized word.
 
-5. Visualization
-Waveforms of all three signals are plotted for manual inspection:
+5.Visualization
+  Waveforms of all three signals are plotted for manual inspection:
 
-bale.wav
+  bale.wav
 
-kheir.wav
+  kheir.wav
 
-The test audio (e.g., bale_test.wav)
+  The test audio (e.g., bale_test.wav)
 
-This helps understand the shape and relative energy of the audio inputs.
+  This helps understand the shape and relative energy of the audio inputs.
 
-6. Decision Logic
-After calculating the DTW distance between the test MFCC sequence and each reference:
+6.Decision Logic
+  After calculating the DTW distance between the test MFCC sequence and each reference:
 
 If DTW(test, bale) < DTW(test, kheir), it prints: Detected word: Bale
 
