@@ -7,7 +7,7 @@ The aim is to classify a test utterance as either "Bale" or "Kheir" by comparing
 
 The pipeline includes:
 
-1.Audio Loading
+### 1.Audio Loading
    Three audio files are used:
 
    A reference audio of the word "Bale" (bale.wav)
@@ -18,7 +18,7 @@ The pipeline includes:
 
    The audio is loaded using Librosa with its original sampling rate.
 
-2.Framing
+### 2.Framing
   Each audio signal is split into overlapping frames using a sliding window:
 
   Frame length: 300 samples
@@ -26,7 +26,7 @@ The pipeline includes:
   Hop length: 100 samples
   Framing is essential to break the signal into small chunks for short-time analysis.
 
-3.MFCC Feature Extraction
+### 3.MFCC Feature Extraction
   MFCCs are computed from each frame:
 
   16 MFCC coefficients per frame
@@ -34,7 +34,7 @@ The pipeline includes:
   Frame-level MFCCs are averaged across frequency bins (mean over time)
   This results in a sequence of MFCC feature vectors representing the overall spectral content of the word.
 
-4.DTW-Based Matching
+### 4.DTW-Based Matching
   The DTW (Dynamic Time Warping) algorithm is used to align and compare the test signal with each reference template:
 
   A custom cepstral distance (squared Euclidean distance between MFCC vectors) is used as the frame-level distance metric.
@@ -43,7 +43,7 @@ The pipeline includes:
 
   The template (either "Bale" or "Kheir") that yields the lower DTW distance to the test signal is chosen as the recognized word.
 
-5.Visualization
+### 5.Visualization
   Waveforms of all three signals are plotted for manual inspection:
 
   bale.wav
@@ -54,7 +54,7 @@ The pipeline includes:
 
   This helps understand the shape and relative energy of the audio inputs.
 
-6.Decision Logic
+### 6.Decision Logic
   After calculating the DTW distance between the test MFCC sequence and each reference:
 
 If DTW(test, bale) < DTW(test, kheir), it prints: Detected word: Bale
